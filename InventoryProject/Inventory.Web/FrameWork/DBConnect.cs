@@ -18,15 +18,14 @@ namespace Inventory.Web.FrameWork
 
         public  DBConnect()
         {
-            connStr.Append(@"Data Source =
-  (DESCRIPTION =
-    (ADDRESS = (PROTOCOL = TCP)(HOST = 10.10.11.39)(PORT = 1521))
-    (CONNECT_DATA =
-      (SERVER = DEDICATED)
-      (SERVICE_NAME = materialDB)
-    )
-  );User ID = STOCK; Password=1234
-");
+            connStr.Append(@"Data Source=(DESCRIPTION ="
+                + "(ADDRESS_LIST ="
+                  + "(ADDRESS = (PROTOCOL = TCP)(HOST = 10.10.11.39)(PORT = 1521))"
+                + ")"
+                + "(CONNECT_DATA ="
+                  + "(SERVICE_NAME = materialDB)"
+                + ")"
+              + "); user id=STOCK;Password=1234");
         }
 
         private OracleConnection Open()

@@ -7,6 +7,7 @@ using System.Web.Routing;
 using Inventory.Web.FrameWork;
 using System.Text;
 using System.Data;
+using System.Diagnostics;
 
 namespace Inventory.Web
 {
@@ -19,19 +20,19 @@ namespace Inventory.Web
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            StringBuilder sb = new StringBuilder();
+//            StringBuilder sb = new StringBuilder();
 
-            sb.Append(@"Select *
-From material");
-            DataTable dt = db.ExecuteQuery(sb.ToString());
+//            sb.Append(@"Select *
+//From material");
+//            DataTable dt = db.ExecuteQuery(sb.ToString());
 
-            System.Console.WriteLine(dt.Rows[0][0].ToString(), dt.Rows[0][1].ToString());
+//            Debug.WriteLine(dt.Rows[0][0].ToString(), dt.Rows[0][1].ToString());
+            
+//            sb.Clear();
+//            sb.Append(@"Insert Into test (key, value) Values(
+//'111', '111')");
 
-            sb.Clear();
-            sb.Append(@"Insert Into test (key, value) VAlues
-'11', '11')");
-
-            db.ExecuteTranaction(sb.ToString());
+//            db.ExecuteTranaction(sb.ToString());
          
 
         }
