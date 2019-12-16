@@ -93,8 +93,27 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="lib\axios\axios.js" />
+    <Content Include="lib\axios\axios.min.js" />
+    <Content Include="lib\vue\vue.common.dev.js" />
+    <Content Include="lib\vue\vue.common.js" />
+    <Content Include="lib\vue\vue.common.prod.js" />
+    <Content Include="lib\vue\vue.esm.browser.js" />
+    <Content Include="lib\vue\vue.esm.browser.min.js" />
+    <Content Include="lib\vue\vue.esm.js" />
+    <Content Include="lib\vue\vue.js" />
+    <Content Include="lib\vue\vue.min.js" />
+    <Content Include="lib\vue\vue.runtime.common.dev.js" />
+    <Content Include="lib\vue\vue.runtime.common.js" />
+    <Content Include="lib\vue\vue.runtime.common.prod.js" />
+    <Content Include="lib\vue\vue.runtime.esm.js" />
+    <Content Include="lib\vue\vue.runtime.js" />
+    <Content Include="lib\vue\vue.runtime.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="libman.json" />
+    <Content Include="lib\axios\axios.map" />
+    <Content Include="lib\axios\axios.min.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -129,6 +148,16 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Inventory.Domain\Inventory.Domain.csproj">
+      <Project>{0ea7b7fe-fe2e-40fc-9872-9e0bcd44c4ad}</Project>
+      <Name>Inventory.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Inventory.Service\Inventory.Service.csproj">
+      <Project>{4761f261-9f6c-4ce5-8d99-351bc2a69b2a}</Project>
+      <Name>Inventory.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

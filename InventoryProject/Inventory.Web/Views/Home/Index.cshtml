@@ -1,4 +1,4 @@
-﻿
+﻿@using Inventory.Domain;
 @{
     ViewBag.Title = "Index";
 }
@@ -6,9 +6,16 @@
 <title>재고관리</title>
 
 <h2>재고관리 페이지</h2>
+@{
+    List<test> a = ViewBag.testList;
+}
 <div id="app">
-    {{message}} 
+    {{message}}  
+    
 </div>
+<p>
+    @a[0].Key
+</p>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js">
 
 </script>
