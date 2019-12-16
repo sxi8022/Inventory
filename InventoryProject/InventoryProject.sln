@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Web", "Inventory.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Domain", "Inventory.Domain\Inventory.Domain.csproj", "{0EA7B7FE-FE2E-40FC-9872-9E0BCD44C4AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.UnitTest", "Inventory.UnitTest\Inventory.UnitTest.csproj", "{9963E69C-1977-486E-B390-A98CD21A67C3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Service", "Inventory.Service\Inventory.Service.csproj", "{4761F261-9F6C-4CE5-8D99-351BC2A69B2A}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{0EA7B7FE-FE2E-40FC-9872-9E0BCD44C4AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EA7B7FE-FE2E-40FC-9872-9E0BCD44C4AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EA7B7FE-FE2E-40FC-9872-9E0BCD44C4AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9963E69C-1977-486E-B390-A98CD21A67C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9963E69C-1977-486E-B390-A98CD21A67C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9963E69C-1977-486E-B390-A98CD21A67C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9963E69C-1977-486E-B390-A98CD21A67C3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4761F261-9F6C-4CE5-8D99-351BC2A69B2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4761F261-9F6C-4CE5-8D99-351BC2A69B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4761F261-9F6C-4CE5-8D99-351BC2A69B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
