@@ -16,9 +16,9 @@ namespace Inventory.Web.FrameWork
         private OracleConnection gConn = null;
         OracleTransaction gTrans = null;
 
-        public  DBConnect()
+        public DBConnect()
         {
-            connStr.Append(@"Data Source=(DESCRIPTION ="
+            connStr.Append("Data Source=(DESCRIPTION ="
                 + "(ADDRESS_LIST ="
                   + "(ADDRESS = (PROTOCOL = TCP)(HOST = 10.10.11.39)(PORT = 1521))"
                 + ")"
