@@ -8,7 +8,7 @@ using System.Data;
 
 
 
-namespace Inventory.Web.FrameWork
+namespace Inventory.Service.FrameWork
 {
     public class DBConnect
     {
@@ -188,9 +188,6 @@ namespace Inventory.Web.FrameWork
 
             return bResult;
         }
-
-
-
 
 
 

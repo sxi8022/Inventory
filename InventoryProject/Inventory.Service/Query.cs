@@ -1,0 +1,349 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using Inventory.Service.FrameWork;
+
+namespace Inventory.Service
+{
+    public class Query
+    {
+        StringBuilder sb = new StringBuilder();
+        DBConnect db = new DBConnect();
+
+     
+        public DataTable SelectMatGrp()
+        {//대분류 조회
+            sb.Clear();
+            sb.Append(@"
+Select grp_cd, grp_nm, seq, rmk
+From MAT_GRP
+Where sub_cd = 0;
+");
+            return db.ExecuteQuery(sb.ToString());
+        }
+
+        public DataTable SelectMatGrpSub()
+        {//중분류 조회
+            sb.Clear();
+            sb.Append(@"
+Select M_grp1.grp_cd 대분류코드, M_grp1.grp_nm 대분류명, M_grp2.sub_cd 중분류코드, M_grp2.grp_nm 중분류명, M_grp2.seq, M_grp2.rmk
+From MAT_GRP M_GRP1
+Join MAT_GRP M_GRP2 On M_grp1.grp_cd = M_grp2.grp_cd 
+Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
+
+            return db.ExecuteQuery(sb.ToString());
+        }
+
+        public DataTable SelectMaterial()
+        {//자재마스터 조회
+            sb.Clear();
+            sb.Append(@"
+Select mat_no 제품코드
+    , mat_nm 제품명
+    , item_no 품번
+    , Mat.grp_cd 대분류코드
+    , Grp2.grp_nm 대분류명
+    , Mat.sub_cd 중분류코드
+    , Grp.grp_nm 중분류명
+    , Mat.rmk
+From MATERIAL Mat
+Join MAT_GRP Grp On Grp.grp_cd = Mat.grp_cd And Grp.sub_cd = Mat.sub_cd
+Join Mat_GRP Grp2 On Grp2.grp_cd = Mat.grp_cd And Grp2.sub_cd = 0
+");
+
+            return db.ExecuteQuery(sb.ToString());
+        }
+
+        public DataTable SelectInMaterial(string pFrom, string pTo)
+        {//자재입고 조회
+            sb.Clear();
+            sb.Append(@"
+Select stock_no 입고번호
+    , ipchul_date 입고일자
+From STOCK Sto
+Where stock_type = 'I' And ipchul_date Between '" + pFrom + @"' And '" + pTo + @"'
+Group By stock_no, Sto.cust_cd, Cus.cust_nm, ipchul_date
+Order By stock_no");
+
+            return db.ExecuteQuery(sb.ToString());
+        }
+
+        public DataTable SelectInMaterialSub(string pStockNo)
+        {//자재입고sub 조회
+            sb.Clear();
+            sb.Append(@"
+Select stock_no 입고번호
+    , Mat.mat_no 자재코드
+    , Mat.mat_nm 자재명
+    , Mat.item_no 품번
+    , Sto.ipchul_cnt 입고수량
+    , Sto.rmk
+From STOCK Sto
+Join MATERIAL Mat On Mat.mat_no = Sto.mat_no
+Where stock_no = '" + pStockNo + @"'");
+
+            return db.ExecuteQuery(sb.ToString());
+        }
+
+        public DataTable SelectOutMaterial(string pFrom, string pTo)
+        {//자재출고 조회
+            sb.Clear();
+            sb.Append(@"
+Select stock_no 출고번호
+    , ipchul_date 입고일자
+From STOCK Sto
+Where stock_type = 'O' And ipchul_date Between '" + pFrom + @"' And '" + pTo + @"'
+Group By stock_no, Sto.cust_cd, Cus.cust_nm, ipchul_date
+Order By stock_no");
+
+            return db.ExecuteQuery(sb.ToString());
+        }
+
+        public DataTable SelectOutMaterialSub(string pStockNo)
+        {//자재출고sub 조회
+            sb.Clear();
+            sb.Append(@"
+Select stock_no 출고번호
+    , Mat.mat_no 자재코드
+    , Mat.mat_nm 자재명
+    , Mat.item_no 품번
+    , Sto.ipchul_cnt 출고수량
+    , Sto.rmk
+From STOCK Sto
+Join MATERIAL Mat On Mat.mat_no = Sto.mat_no
+Where stock_no = '" + pStockNo + @"'");
+
+            return db.ExecuteQuery(sb.ToString());
+        }
+
+        public DataTable SelectStock()
+        {//자재재고 조회
+            sb.Clear();
+            sb.Append(@"
+Select Mat.mat_no 자재코드
+    , Mat.mat_nm 자재명
+    , Mat.item_no 품번
+    , Max(sto.ipchul_cnt) 재고수량
+From STOCK Sto
+Join MATERIAL Mat On Mat.mat_no = Sto.mat_no
+Group By Mat.mat_no, Mat.mat_nm, Mat.item_no
+Order By Mat.mat_nm");
+
+            return db.ExecuteQuery(sb.ToString());
+        }
+
+        public bool InsertMatGrp(string pGrpCd, string pSeq, string pGrpNm, string pRmk)
+        {
+            sb.Clear();
+            sb.Append(@"
+Insert Into mat_grp
+(GRP_CD, SUB_CD, SEQ, GRP_NM, RMK) Values
+('" + pGrpCd + "', '0', '" + pSeq + "', '" + pGrpNm + "', '" + pRmk + "')");
+
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        public bool UpdatetMatGrp(string pGrpCd, string pGrpNm, string pRmk)
+        {
+            sb.Clear();
+            sb.Append(@"
+Update MAT_GRP Set
+    GRP_NM = '" + pGrpNm + @"'
+    , RMK = ''
+Where GRP_CD = '" + pGrpCd + @"' And SUB_CD = '0';
+");
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        public bool DeleteMatGrp(string pGrpCd)
+        {
+            sb.Clear();
+            sb.Append(@"
+Delete From MAT_GRP
+Where GRP_CD = '" + pGrpCd + @"' And SUB_CD = '0';
+");
+
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        public bool InsertMatGrpSub(string pGrpCd, string pSubCd, string pSeq, string pGrpNm, string pRmk)
+        {
+            sb.Clear();
+            sb.Append(@"
+Insert Into MAT_GRP
+(GRP_CD, SUB_CD, SEQ, GRP_NM, RMK) Values
+('" + pGrpCd + "', '" + pSubCd + "', '" + pSeq + "', '" + pGrpNm + "', '" + pRmk + @"');
+");
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        public bool UpdateMatGrpSub(string pGrpCd, string pSubCd, string pGrpNm, string pRmk)
+        {
+            sb.Clear();
+            sb.Append(@"
+Update MAT_GRP Set
+    GRP_NM = '" + pGrpNm + @"'
+    , RMK = '" + pRmk + @"'
+Where GRP_CD = '" + pGrpCd + "' And SUB_CD = '" + pSubCd + @"';
+");
+
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        public bool DeleteMatGupSub(string pGrpCd, string pSubCd)
+        {
+            sb.Clear();
+            sb.Append(@"
+Delete From MAT_GRP
+Where GRP_CD = '" + pGrpCd + "' And SUB_CD = '" + pSubCd + @"';
+");
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        public bool InsertMaterial(string pMatNo, string pMatNm, string pItemNO, string pGrpCd, string pSubCd, string pRmk)
+        {
+            sb.Clear();
+            sb.Append(@"
+Insert Into MATERIAL
+(MAT_NO, MAT_NM, ITEM_NO, GRP_CD, SUB_CD, RMK) Values
+('" + pMatNo + "', '" + pMatNm + "', '" + pItemNO + "', '" + pGrpCd + "', '" + pSubCd + "', '" + pRmk + @"');
+");
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        public bool UpdateMaterial(string pMatNo, string pMatNm, string pItemNO, string pGrpCd, string pSubCd, string pRmk)
+        {
+            sb.Clear();
+            sb.Append(@"
+Update MATERIAL Set
+    MAT_NM = '" + pMatNm + @"'
+    , ITEM_NO = '" + pItemNO + @"'
+    , GRP_CD = '" + pGrpCd + @"'
+    , SUB_CD = '" + pSubCd + @"'
+    , RMK = '" + pRmk + @"'
+Where MAT_NO = '" + pMatNo + @"';
+");
+
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        public bool DeleteMaterial(string pMatNo)
+        {
+            sb.Clear();
+            sb.Append(@"
+Delete From MATERIAL
+Where MAT_NO = '" + pMatNo + @"';
+");
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        public bool InsertStock(string pStockNo, string pMatNo, double pIpchulCnt, string pStockType, string pIpchulDate, string pRmk)
+        {
+            double stockCnt = 0;
+
+            sb.Clear();
+            //데이터 입력하는 일자의 최대 stock_no일때의 재고수량 확인
+            sb.Append(@"
+Select stock_cnt
+From Stock Sto
+Join (
+    Select Max(stock_no) stock_no
+    From Stock
+    Where ipchul_date <= '" + pIpchulDate + "' And mat_no = '" + pMatNo + @"'
+) Num On Num.stock_no = Sto.stock_no
+Where ipchul_date = '" + pIpchulDate + "' And mat_no = '" + pMatNo + "'");
+            
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+            if (dt.Rows.Count > 0)
+                double.TryParse(dt.Rows[0][0].ToString(), out stockCnt);
+
+            if (pStockType == "O")//출고데이터인 경우 재고를 빼줘야 함
+                pIpchulCnt = pIpchulCnt - pIpchulCnt - pIpchulCnt;
+            sb.Clear();
+            sb.Append(@"
+Insert Into STOCK
+(STOCK_NO, MAT_NO, IPCHUL_CNT, STOCK_TYPE, IPCHUL_DATE, STOCK_CNT, RMK) Values
+('" + pStockNo + "', '" + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + (stockCnt + pIpchulCnt) + "', '" + pRmk + @"');
+--입출고 일자 기준으로 이후 데이터가 있는 경우 이후 데이터의 재고는 +- 처리해줘야함.
+Update STOCK Set
+    stock_cnt = stock_cnt + " + pIpchulCnt + @"
+Where mat_no = '" + pMatNo + "' And ipchul_date >= '" + pIpchulDate + "' And ipchul_date || stock_no > '" + pIpchulDate+ pStockNo + @"';
+");
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        public bool UpdateStock(string pStockNo, string pMatNo, double pIpchulCnt, string pStockType, string pRmk, string pDate)
+        {
+            double regCnt = 0;
+            sb.Clear();
+            sb.Append(@"
+Select ipchul_cnt
+From STOCK
+Where stock_no = '" + pStockNo + "' And mat_no = '" + pMatNo + "'");
+
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+            double.TryParse(dt.Rows[0][0].ToString(), out regCnt);
+            
+            sb.Clear();
+            sb.Append(@"
+Update STOCK Set
+    IPCHUL_CNT = '" + pIpchulCnt + @"'
+    , STOCK_TYPE = '" + pStockType + @"'");
+            if (pStockType == "I")
+                sb.Append(@"
+    , STOCK_CNT = STOCK_CNT - " + regCnt + " + " + pIpchulCnt);
+            else
+                sb.Append(@"
+    , STOCK_CNT = STOCK_CNT + " + regCnt + " - " + pIpchulCnt);
+            sb.Append(@"
+    , RMK = '" + pRmk + @"'
+Where STOCK_NO = '" + pStockNo + @"' And MAT_NO = '" + pMatNo + @"';
+
+
+UPDATE STOCK Set");
+            if (pStockType == "I")
+                sb.Append(@"
+    STOCK_CNT = STOCK_CNT - " + regCnt  + " + " + pIpchulCnt);
+            else
+                sb.Append(@"
+    STOCK_CNT = STOCK_CNT + " + regCnt + " - " + pIpchulCnt);
+            sb.Append(@"
+Where MAT_NO = '" + pMatNo + "' And IPCHUL_DATE >= '" + pDate + "' And ipchul_date || STOCK_NO > '" + pDate + pStockNo + @"';
+");
+
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        public bool DeleteStock(string pStockNo, string pMatNo, string pDate, string pType)
+        {
+            sb.Clear();
+            if (pType == "I")
+                sb.Append(@"
+Update STOCK Set
+    STOCK_CNT = STOCK_CNT - 
+        (Select IPCHUL_CNT
+        From STOCK
+        Where MAT_NO = '" + pMatNo + "' And STOCK_NO = '" + pStockNo + @"')
+Where MAT_NO = '" + pMatNo + "' And IPCHUL_DATE >= '" + pDate + "' And ipchul_date || STOCK_NO > '" + pDate + pStockNo + @"';");
+            else
+                sb.Append(@"
+Update STOCK Set
+    STOCK_CNT = STOCK_CNT +
+        (Select IPCHUL_CNT
+        From STOCK
+        Where MAT_NO = '" + pMatNo + "' And STOCK_NO = '" + pStockNo + @"')
+Where MAT_NO = '" + pMatNo + "' And IPCHUL_DATE >= '" + pDate + "' And ipchul_date || STOCK_NO > '" + pDate + pStockNo + @"';");
+
+            sb.Append(@"
+Delete From STOCK
+Where MAT_NO = '" + pMatNo + "' And STOCK_NO = '" + pStockNo + @"';
+");
+
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+    }
+}
