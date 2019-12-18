@@ -10,6 +10,7 @@ namespace Inventory.Domain
     {
         public string grpCd { get; set; }
         public string subCd { get; set; }
+        public string subNm { get; set; }
         public string grpNm { get; set; }
         public int seq { get; set; }
         public string rmk { get; set; }

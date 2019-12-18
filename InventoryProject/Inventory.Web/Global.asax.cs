@@ -23,9 +23,10 @@ namespace Inventory.Web
             //qry.InsertStock("6", "2", 33, "I", "2019-12-12", "비고");
             //qry.UpdateStock("1", "2", 7, "I", "", "2019-12-13");
             //qry.UpdateStock("4", "1", 10, "O", "qq", "2019-12-14");
-            qry.DeleteStock("1", "1", "2019-12-13", "I");
+            //qry.DeleteStock("1", "1", "2019-12-13", "I");
+            qry.SelectMatGrp();
 
-            
+
 
         }
     }

@@ -10,11 +10,13 @@ namespace Inventory.Domain
     {
         public int stockNo { get; set; }
         public int matNo { get; set; }
+        public string matNm { get; set; }
         public double ipchulCnt { get; set; }
         public string stockType { get; set; }
         public string ipchulDate { get; set; }
         public double stockCnt { get; set; }
         public string rmk { get; set; }
         public string custCd { get; set; }
+        public string itemNo { get; set; }
     }
 }

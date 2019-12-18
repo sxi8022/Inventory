@@ -15,27 +15,62 @@ namespace Inventory.Service
         DBConnect db = new DBConnect();
 
      
-        public DataTable SelectMatGrp()
+        public List<MatGrp> SelectMatGrp()
         {//대분류 조회
             sb.Clear();
             sb.Append(@"
 Select grp_cd, grp_nm, seq, rmk
 From MAT_GRP
-Where sub_cd = 0;
+Where sub_cd = 0
 ");
-            return db.ExecuteQuery(sb.ToString());
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+
+            List<MatGrp> matGrpLi = new List<MatGrp>();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                MatGrp mat = new MatGrp();
+
+                mat.grpCd = dr["grp_cd"].ToString();
+                mat.grpNm = dr["grp_nm"].ToString();
+                mat.seq = Convert.ToInt32(dr["seq"]);
+                mat.rmk = dr["rmk"].ToString();
+                matGrpLi.Add(mat);
+            }
+
+            return matGrpLi;
         }
 
-        public DataTable SelectMatGrpSub()
+        public List<MatGrp> SelectMatGrpSub()
         {//중분류 조회
             sb.Clear();
             sb.Append(@"
-Select M_grp1.grp_cd 대분류코드, M_grp1.grp_nm 대분류명, M_grp2.sub_cd 중분류코드, M_grp2.grp_nm 중분류명, M_grp2.seq, M_grp2.rmk
+Select M_grp1.grp_cd
+    , M_grp1.grp_nm 
+    , M_grp2.sub_cd 
+    , M_grp2.grp_nm sub_nm
+    , M_grp2.seq
+    , M_grp2.rmk
 From MAT_GRP M_GRP1
 Join MAT_GRP M_GRP2 On M_grp1.grp_cd = M_grp2.grp_cd 
 Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
 
-            return db.ExecuteQuery(sb.ToString());
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+            List<MatGrp> matGrpLi = new List<MatGrp>();
+
+            foreach(DataRow dr in dt.Rows)
+            {
+                MatGrp mat = new MatGrp();
+
+                mat.grpCd = dr["grp_cd"].ToString();
+                mat.grpNm = dr["grp_nm"].ToString();
+                mat.subCd = dr["sub_cd"].ToString();
+                mat.subNm = dr["sub_nm"].ToString();
+                mat.seq = Convert.ToInt32(dr["seq"]);
+                mat.rmk = dr["rmk"].ToString();
+                matGrpLi.Add(mat);
+            }
+            return matGrpLi;
         }
 
         public List<Material> SelectMaterial()
@@ -78,82 +113,147 @@ Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
             return materialList;
         }
 
-        public DataTable SelectInMaterial(string pFrom, string pTo)
+        public List<Stock> SelectInMaterial(string pFrom, string pTo)
         {//자재입고 조회
             sb.Clear();
             sb.Append(@"
-Select stock_no 입고번호
-    , ipchul_date 입고일자
+Select stock_no 
+    , ipchul_date 
 From STOCK Sto
 Where stock_type = 'I' And ipchul_date Between '" + pFrom + @"' And '" + pTo + @"'
 Group By stock_no, Sto.cust_cd, Cus.cust_nm, ipchul_date
 Order By stock_no");
 
-            return db.ExecuteQuery(sb.ToString());
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+            List<Stock> stockLi = new List<Stock>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                Stock sto = new Stock();
+
+                sto.stockNo = Convert.ToInt32(dr["stock_no"].ToString());
+                sto.ipchulDate = dr["ipchul_date"].ToString();
+
+                stockLi.Add(sto);
+            }
+            return stockLi;
         }
 
-        public DataTable SelectInMaterialSub(string pStockNo)
+        public List<Stock> SelectInMaterialSub(string pStockNo)
         {//자재입고sub 조회
             sb.Clear();
             sb.Append(@"
-Select stock_no 입고번호
-    , Mat.mat_no 자재코드
-    , Mat.mat_nm 자재명
-    , Mat.item_no 품번
-    , Sto.ipchul_cnt 입고수량
+Select stock_no 
+    , Mat.mat_no 
+    , Mat.mat_nm 
+    , Mat.item_no 
+    , Sto.ipchul_cnt 
     , Sto.rmk
 From STOCK Sto
 Join MATERIAL Mat On Mat.mat_no = Sto.mat_no
 Where stock_no = '" + pStockNo + @"'");
 
-            return db.ExecuteQuery(sb.ToString());
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+            List<Stock> stockLi = new List<Stock>();
+            foreach(DataRow dr in dt.Rows)
+            {
+                Stock sto = new Stock();
+
+                sto.stockNo = Convert.ToInt32(dr["stock_no"].ToString());
+                sto.matNo = Convert.ToInt32(dr["mat_no"].ToString());
+                sto.matNm = dr["mat_nm"].ToString();
+                sto.itemNo = dr["item_no"].ToString();
+                sto.ipchulCnt = Convert.ToDouble(dr["ipchul_cnt"].ToString());
+                sto.rmk = dr["rmk"].ToString();
+
+                stockLi.Add(sto);
+            }
+            return stockLi;
         }
 
-        public DataTable SelectOutMaterial(string pFrom, string pTo)
+        public List<Stock> SelectOutMaterial(string pFrom, string pTo)
         {//자재출고 조회
             sb.Clear();
             sb.Append(@"
-Select stock_no 출고번호
-    , ipchul_date 입고일자
+Select stock_no 
+    , ipchul_date 
 From STOCK Sto
 Where stock_type = 'O' And ipchul_date Between '" + pFrom + @"' And '" + pTo + @"'
 Group By stock_no, Sto.cust_cd, Cus.cust_nm, ipchul_date
 Order By stock_no");
 
-            return db.ExecuteQuery(sb.ToString());
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+            List<Stock> stockLi = new List<Stock>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                Stock sto = new Stock();
+
+                sto.stockNo = Convert.ToInt32(dr["stock_no"].ToString());
+                sto.ipchulDate = dr["ipchul_date"].ToString();
+
+                stockLi.Add(sto);
+            }
+            return stockLi;
         }
 
-        public DataTable SelectOutMaterialSub(string pStockNo)
+        public List<Stock> SelectOutMaterialSub(string pStockNo)
         {//자재출고sub 조회
             sb.Clear();
             sb.Append(@"
-Select stock_no 출고번호
-    , Mat.mat_no 자재코드
-    , Mat.mat_nm 자재명
-    , Mat.item_no 품번
-    , Sto.ipchul_cnt 출고수량
+Select stock_no 
+    , Mat.mat_no 
+    , Mat.mat_nm 
+    , Mat.item_no 
+    , Sto.ipchul_cnt 
     , Sto.rmk
 From STOCK Sto
 Join MATERIAL Mat On Mat.mat_no = Sto.mat_no
 Where stock_no = '" + pStockNo + @"'");
 
-            return db.ExecuteQuery(sb.ToString());
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+            List<Stock> stockLi = new List<Stock>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                Stock sto = new Stock();
+
+                sto.stockNo = Convert.ToInt32(dr["stock_no"].ToString());
+                sto.matNo = Convert.ToInt32(dr["mat_no"].ToString());
+                sto.matNm = dr["mat_nm"].ToString();
+                sto.itemNo = dr["item_no"].ToString();
+                sto.ipchulCnt = Convert.ToDouble(dr["ipchul_cnt"].ToString());
+                sto.rmk = dr["rmk"].ToString();
+
+                stockLi.Add(sto);
+            }
+            return stockLi;
         }
 
-        public DataTable SelectStock()
+        public List<Stock> SelectStock()
         {//자재재고 조회
             sb.Clear();
             sb.Append(@"
-Select Mat.mat_no 자재코드
-    , Mat.mat_nm 자재명
-    , Mat.item_no 품번
-    , Max(sto.ipchul_cnt) 재고수량
+Select Mat.mat_no 
+    , Mat.mat_nm 
+    , Mat.item_no 
+    , Max(sto.ipchul_cnt) ipchul_cnt
 From STOCK Sto
 Join MATERIAL Mat On Mat.mat_no = Sto.mat_no
 Group By Mat.mat_no, Mat.mat_nm, Mat.item_no
 Order By Mat.mat_nm");
 
-            return db.ExecuteQuery(sb.ToString());
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+            List<Stock> stockLi = new List<Stock>();
+            foreach(DataRow dr in dt.Rows)
+            {
+                Stock sto = new Stock();
+
+                sto.matNo = Convert.ToInt32(dr["mat_no"].ToString());
+                sto.matNm = dr["mat_nm"].ToString();
+                sto.itemNo = dr["item_no"].ToString();
+                sto.ipchulCnt = Convert.ToDouble(dr["ipchul_cnt"].ToString());
+
+                stockLi.Add(sto);
+            }
+            return stockLi;
         }
 
         public bool InsertMatGrp(string pGrpCd, string pSeq, string pGrpNm, string pRmk)
