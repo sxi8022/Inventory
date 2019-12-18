@@ -41,7 +41,7 @@ Where sub_cd = 0
             return matGrpLi;
         }
 
-        public List<MatGrp> SelectMatGrpSub()
+        public List<MatGrp> SelectMatGrpSub(string grpCd = null)
         {//중분류 조회
             sb.Clear();
             sb.Append(@"
@@ -54,6 +54,12 @@ Select M_grp1.grp_cd
 From MAT_GRP M_GRP1
 Join MAT_GRP M_GRP2 On M_grp1.grp_cd = M_grp2.grp_cd 
 Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
+            if (!string.IsNullOrEmpty(grpCd))
+            {
+                sb.AppendFormat(@"
+                   AND M_GRP1.grp_cd = '{0}'
+                ", grpCd);
+            }
 
             DataTable dt = db.ExecuteQuery(sb.ToString());
             List<MatGrp> matGrpLi = new List<MatGrp>();
@@ -342,13 +348,13 @@ Where GRP_CD = '" + pGrpCd + "' And SUB_CD = '" + pSubCd + @"';
             return db.ExecuteTranaction(sb.ToString());
         }
 
-        public bool InsertMaterial(string pMatNo, string pMatNm, string pItemNO, string pGrpCd, string pSubCd, string pRmk)
+        public bool InsertMaterial(string pMatNm, string pItemNO, string pGrpCd, string pSubCd, string pRmk)
         {
             sb.Clear();
             sb.Append(@"
 Insert Into MATERIAL
 (MAT_NO, MAT_NM, ITEM_NO, GRP_CD, SUB_CD, RMK) Values
-('" + pMatNo + "', '" + pMatNm + "', '" + pItemNO + "', '" + pGrpCd + "', '" + pSubCd + "', '" + pRmk + @"');
+(MATERIAL_SEQ.nextval,'" + pMatNm + "', '" + pItemNO + "', '" + pGrpCd + "', '" + pSubCd + "', '" + pRmk + @"');
 ");
             return db.ExecuteTranaction(sb.ToString());
         }

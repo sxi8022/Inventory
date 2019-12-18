@@ -74,5 +74,26 @@ namespace Inventory.Web.Controllers
 
             return Json(stockOutSpeList, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult MaterialGrpSearch() {
+            return Json(query.SelectMatGrp(), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult MaterialSubGrpSearch()
+        {
+            return Json(query.SelectMatGrpSub(Request.Params["grpCd"].ToString()), JsonRequestBehavior.AllowGet);
+        }
+
+        public void MaterialAdd()
+        {
+            //string pMatNm, string pItemNO, string pGrpCd, string pSubCd, string pRmk
+            query.InsertMaterial(
+                Request.Params["matNm"].ToString(),
+                Request.Params["itemNo"].ToString(),
+                Request.Params["grpCd"].ToString(),
+                Request.Params["subCd"].ToString(),
+                Request.Params["rmk"].ToString()
+            );
+        }
     }
 }
