@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Inventory.Domain
 {
+    //재고
     public class Stock
     {
         /// <summary>
