@@ -120,17 +120,22 @@ Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
 
             return materialList;
         }
-
+        /// <summary>
+        /// 자재입고 조회
+        /// </summary>
+        /// <param name="pFrom"></param>
+        /// <param name="pTo"></param>
+        /// <returns></returns>
         public List<Stock> SelectInMaterial(string pFrom, string pTo)
-        {//자재입고 조회
+        {
             sb.Clear();
             sb.Append(@"
-Select stock_no 
-    , ipchul_date 
-From STOCK Sto
-Where stock_type = 'I' And ipchul_date Between '" + pFrom + @"' And '" + pTo + @"'
-Group By stock_no, Sto.cust_cd, Cus.cust_nm, ipchul_date
-Order By stock_no");
+            Select stock_no 
+                , ipchul_date 
+            From STOCK Sto
+            Where stock_type = 'I' And ipchul_date Between '" + pFrom + @"' And '" + pTo + @"'
+            Group By stock_no, ipchul_date
+            Order By stock_no");
 
             DataTable dt = db.ExecuteQuery(sb.ToString());
             List<Stock> stockLi = new List<Stock>();
@@ -146,19 +151,24 @@ Order By stock_no");
             return stockLi;
         }
 
+        /// <summary>
+        /// 자재입고sub 조회
+        /// </summary>
+        /// <param name="pStockNo"></param>
+        /// <returns></returns>
         public List<Stock> SelectInMaterialSub(string pStockNo)
-        {//자재입고sub 조회
+        {
             sb.Clear();
             sb.Append(@"
-Select stock_no 
-    , Mat.mat_no 
-    , Mat.mat_nm 
-    , Mat.item_no 
-    , Sto.ipchul_cnt 
-    , Sto.rmk
-From STOCK Sto
-Join MATERIAL Mat On Mat.mat_no = Sto.mat_no
-Where stock_no = '" + pStockNo + @"'");
+            Select stock_no 
+                , Mat.mat_no 
+                , Mat.mat_nm 
+                , Mat.item_no 
+                , Sto.ipchul_cnt 
+                , Sto.rmk
+            From STOCK Sto
+            Join MATERIAL Mat On Mat.mat_no = Sto.mat_no
+            Where stock_no = '" + pStockNo + @"'");
 
             DataTable dt = db.ExecuteQuery(sb.ToString());
             List<Stock> stockLi = new List<Stock>();
