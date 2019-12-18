@@ -348,13 +348,13 @@ Where GRP_CD = '" + pGrpCd + "' And SUB_CD = '" + pSubCd + @"';
             return db.ExecuteTranaction(sb.ToString());
         }
 
-        public bool InsertMaterial(string pMatNo, string pMatNm, string pItemNO, string pGrpCd, string pSubCd, string pRmk)
+        public bool InsertMaterial(string pMatNm, string pItemNO, string pGrpCd, string pSubCd, string pRmk)
         {
             sb.Clear();
             sb.Append(@"
 Insert Into MATERIAL
 (MAT_NO, MAT_NM, ITEM_NO, GRP_CD, SUB_CD, RMK) Values
-('" + pMatNo + "', '" + pMatNm + "', '" + pItemNO + "', '" + pGrpCd + "', '" + pSubCd + "', '" + pRmk + @"');
+(MATERIAL_SEQ.nextval,'" + pMatNm + "', '" + pItemNO + "', '" + pGrpCd + "', '" + pSubCd + "', '" + pRmk + @"');
 ");
             return db.ExecuteTranaction(sb.ToString());
         }
