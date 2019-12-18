@@ -19,7 +19,7 @@ namespace Inventory.Web.Controllers
         
         public JsonResult MaterialSearch()
         {
-            List<Material> materialList = query.SelectMaterial();
+            List<Material> materialList = query.SelectMaterial(Request.Params["matNm"].ToString());
 
             return Json(materialList, JsonRequestBehavior.AllowGet);
         }
