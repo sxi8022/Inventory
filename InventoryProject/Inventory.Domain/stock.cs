@@ -18,5 +18,6 @@ namespace Inventory.Domain
         public string rmk { get; set; }
         public string custCd { get; set; }
         public string itemNo { get; set; }
+        //////
     }
 }
