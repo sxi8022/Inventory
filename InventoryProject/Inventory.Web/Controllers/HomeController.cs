@@ -35,9 +35,9 @@ namespace Inventory.Web.Controllers
         /// 입고 화면 조회
         /// </summary>
         /// <returns></returns>
-        public JsonResult IpgoList()
+        public JsonResult IpgoList(string fromDate, string toDate)
         {
-            List<Stock> stockInList = query.SelectInMaterial(Request.Params["fromDate"].ToString(), Request.Params["toDate"].ToString());
+            List<Stock> stockInList = query.SelectInMaterial(fromDate, toDate);
 
             return Json(stockInList, JsonRequestBehavior.AllowGet);
         }
