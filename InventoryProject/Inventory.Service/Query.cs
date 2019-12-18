@@ -137,11 +137,8 @@ Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
             sb.Clear();
             sb.Append(@"
             Select stock_no 
-                , m.mat_no
-                , m.mat_nm
-                , ipchul_date
+                , ipchul_date 
             From STOCK Sto
-            inner join Material m on Sto.mat_no = m.mat_no
             Where stock_type = 'I' And ipchul_date Between '" + pFrom + @"' And '" + pTo + @"'
             Group By stock_no, ipchul_date
             Order By stock_no");
