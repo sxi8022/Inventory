@@ -74,5 +74,14 @@ namespace Inventory.Web.Controllers
 
             return Json(stockOutSpeList, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult MaterialGrpSearch() {
+            return Json(query.SelectMatGrp(), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult MaterialSubGrpSearch()
+        {
+            return Json(query.SelectMatGrpSub(Request.Params["grpCd"].ToString()), JsonRequestBehavior.AllowGet);
+        }
     }
 }
