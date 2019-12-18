@@ -1,25 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿
 using System.Web.Mvc;
 using Inventory.Service;
 using Inventory.Domain;
+using System.Data;
+using System.Collections.Generic;
 
 namespace Inventory.Web.Controllers
 {
     public class HomeController : Controller
     {
-        Class1 class1 = new Class1();
+        Query query = new Query();
 
         // GET: Home
         public JsonResult Index()
         {
-            List<test> testList = class1.ConnectDB();
-            
-
-            return Json(testList, JsonRequestBehavior.AllowGet);
+            return Json("", JsonRequestBehavior.AllowGet);
         }
         
+        public JsonResult MaterialSearch()
+        {
+            List<Material> materialList = query.SelectMaterial();
+
+            return Json(materialList, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }

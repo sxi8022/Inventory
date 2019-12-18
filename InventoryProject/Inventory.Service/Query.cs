@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using Inventory.Service.FrameWork;
+using Inventory.Domain;
 
 namespace Inventory.Service
 {
@@ -37,24 +38,44 @@ Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
             return db.ExecuteQuery(sb.ToString());
         }
 
-        public DataTable SelectMaterial()
+        public List<Material> SelectMaterial()
         {//자재마스터 조회
             sb.Clear();
             sb.Append(@"
-Select mat_no 제품코드
-    , mat_nm 제품명
-    , item_no 품번
-    , Mat.grp_cd 대분류코드
-    , Grp2.grp_nm 대분류명
-    , Mat.sub_cd 중분류코드
-    , Grp.grp_nm 중분류명
-    , Mat.rmk
-From MATERIAL Mat
-Join MAT_GRP Grp On Grp.grp_cd = Mat.grp_cd And Grp.sub_cd = Mat.sub_cd
-Join Mat_GRP Grp2 On Grp2.grp_cd = Mat.grp_cd And Grp2.sub_cd = 0
-");
+                Select mat_no -- 제품코드
+                    , mat_nm -- 제품명
+                    , item_no -- 품번
+                    , Mat.grp_cd -- 대분류코드
+                    , Grp2.grp_nm -- 대분류명
+                    , Mat.sub_cd -- 중분류코드
+                    , Grp.grp_nm sub_nm-- 중분류명
+                    , Mat.rmk -- 비고
+                From MATERIAL Mat
+                Join MAT_GRP Grp On Grp.grp_cd = Mat.grp_cd And Grp.sub_cd = Mat.sub_cd
+                Join Mat_GRP Grp2 On Grp2.grp_cd = Mat.grp_cd And Grp2.sub_cd = 0
+            ");
 
-            return db.ExecuteQuery(sb.ToString());
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+
+            List<Material> materialList = new List<Material>();
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                Material material = new Material();
+
+                material.grpCd = dt.Rows[i]["grp_cd"].ToString();
+                material.matNo = Convert.ToInt32(dt.Rows[i]["mat_no"]);
+                material.matNm = dt.Rows[i]["mat_nm"].ToString();
+                material.itemNo = dt.Rows[i]["item_no"].ToString();
+                material.grpNm = dt.Rows[i]["grp_nm"].ToString();
+                material.subGrpCd = dt.Rows[i]["sub_cd"].ToString();
+                material.subGrpNm = dt.Rows[i]["sub_nm"].ToString();
+                material.rmk = dt.Rows[i]["rmk"].ToString();
+
+                materialList.Add(material);
+            }
+
+            return materialList;
         }
 
         public DataTable SelectInMaterial(string pFrom, string pTo)
