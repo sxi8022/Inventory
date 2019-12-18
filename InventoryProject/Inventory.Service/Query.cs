@@ -73,7 +73,7 @@ Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
             return matGrpLi;
         }
 
-        public List<Material> SelectMaterial()
+        public List<Material> SelectMaterial(string matNm = null)
         {//자재마스터 조회
             sb.Clear();
             sb.Append(@"
@@ -89,6 +89,14 @@ Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
                 Join MAT_GRP Grp On Grp.grp_cd = Mat.grp_cd And Grp.sub_cd = Mat.sub_cd
                 Join Mat_GRP Grp2 On Grp2.grp_cd = Mat.grp_cd And Grp2.sub_cd = 0
             ");
+
+            if(!string.IsNullOrEmpty(matNm))
+            {
+                sb.Append(@"
+                    Where
+                        Mat.mat_nm LIKE '%" + matNm + "%'"
+                );
+            }
 
             DataTable dt = db.ExecuteQuery(sb.ToString());
 
