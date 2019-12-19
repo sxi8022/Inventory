@@ -167,7 +167,8 @@ Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
             sb.Clear();
             sb.Append(@"
             Select stock_no 
-                , ipchul_date 
+                , ipchul_date
+                , stock_type 
                 , Mat.mat_no 
                 , Mat.mat_nm 
                 , Mat.item_no 
@@ -185,6 +186,7 @@ Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
 
                 sto.stockNo = Convert.ToInt32(dr["stock_no"].ToString());
                 sto.ipchulDate = dr["ipchul_date"].ToString();
+                sto.stockType = dr["stock_type"].ToString();
                 sto.matNo = Convert.ToInt32(dr["mat_no"].ToString());
                 sto.matNm = dr["mat_nm"].ToString();
                 sto.itemNo = dr["item_no"].ToString();
