@@ -229,6 +229,7 @@ Order By stock_no");
             sb.Append(@"
 Select stock_no 
     , ipchul_date
+    , stock_type
     , Mat.mat_no 
     , Mat.mat_nm 
     , Mat.item_no 
