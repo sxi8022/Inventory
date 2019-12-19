@@ -167,6 +167,7 @@ Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
             sb.Clear();
             sb.Append(@"
             Select stock_no 
+                , ipchul_date 
                 , Mat.mat_no 
                 , Mat.mat_nm 
                 , Mat.item_no 
