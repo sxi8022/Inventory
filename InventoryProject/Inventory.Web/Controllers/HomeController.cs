@@ -95,5 +95,18 @@ namespace Inventory.Web.Controllers
                 Request.Params["rmk"].ToString()
             );
         }
+
+        public void MaterialUpdate()
+        {
+            //string pMatNm, string pItemNO, string pGrpCd, string pSubCd, string pRmk
+            query.UpdateMaterial(
+                Request.Params["matNo"].ToString(),
+                Request.Params["matNm"].ToString(),
+                Request.Params["itemNo"].ToString(),
+                Request.Params["grpCd"].ToString(),
+                Request.Params["subCd"].ToString(),
+                Request.Params["rmk"].ToString()
+            );
+        }
     }
 }
