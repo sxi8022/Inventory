@@ -83,9 +83,9 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 입고삭제
         /// </summary>
-        public JsonResult IpgoDelete(string pStockNo, string pMatNo, string ipchulDate, string pType)
+        public JsonResult IpgoDelete(string stockNo, string matNo, string ipchulDate, string pType)
         {
-            bool res = query.DeleteStock(pMatNo, pMatNo, ipchulDate, pType);
+            bool res = query.DeleteStock(stockNo, matNo, ipchulDate, pType);
 
             return Json(res, JsonRequestBehavior.AllowGet);
         }
@@ -115,9 +115,9 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 출고추가
         /// </summary>
-        public JsonResult ChulgoAdd(string pStockNo, string pMatNo, string ipchulCnt, string stockType, string ipchulDate, string rmk)
+        public JsonResult ChulgoAdd(string stockNo, string matNo, string ipchulCnt, string stockType, string ipchulDate, string rmk)
         {
-            bool res = query.InsertStock(pStockNo, pMatNo, string.IsNullOrEmpty(ipchulCnt) ? 0.0 : Convert.ToDouble(ipchulCnt), stockType, ipchulDate, rmk);
+            bool res = query.InsertStock(stockNo, matNo, string.IsNullOrEmpty(ipchulCnt) ? 0.0 : Convert.ToDouble(ipchulCnt), stockType, ipchulDate, rmk);
 
             return Json(res, JsonRequestBehavior.AllowGet);
         }
@@ -125,11 +125,11 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 출고수정
         /// </summary>
-        public JsonResult ChulgoUipchulDate(string pStockNo, string pMatNo, string ipchulCnt, string stockType, string rmk, string ipchulDate)
+        public JsonResult ChulgoUipchulDate(string stockNo, string matNo, string ipchulCnt, string stockType, string rmk, string ipchulDate)
         {
             bool res = query.UpdateStock(
-                pStockNo,
-                pMatNo,
+                stockNo,
+                matNo,
                 string.IsNullOrEmpty(ipchulCnt) ? 0.0 : Convert.ToDouble(ipchulCnt),
                 stockType,
                 rmk,
@@ -141,9 +141,9 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 출고삭제
         /// </summary>
-        public JsonResult ChulgoDelete(string pStockNo, string pMatNo, string ipchulDate, string pType)
+        public JsonResult ChulgoDelete(string stockNo, string matNo, string ipchulDate, string pType)
         {
-            bool res = query.DeleteStock(pMatNo, pMatNo, ipchulDate, pType);
+            bool res = query.DeleteStock(stockNo, matNo, ipchulDate, pType);
 
             return Json(res, JsonRequestBehavior.AllowGet);
         }
