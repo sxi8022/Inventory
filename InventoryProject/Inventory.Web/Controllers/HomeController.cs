@@ -67,7 +67,7 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 입고수정
         /// </summary>
-        public JsonResult IpgoUipchulDate(string stockNo, string matNo, string ipchulCnt, string stockType, string rmk, string ipchulDate)
+        public JsonResult IpgoUpDate(string stockNo, string matNo, string ipchulCnt, string stockType, string rmk, string ipchulDate)
         {
             bool res = query.UpdateStock(
                 stockNo,
@@ -125,7 +125,7 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 출고수정
         /// </summary>
-        public JsonResult ChulgoUipchulDate(string stockNo, string matNo, string ipchulCnt, string stockType, string rmk, string ipchulDate)
+        public JsonResult ChulgoUpDate(string stockNo, string matNo, string ipchulCnt, string stockType, string rmk, string ipchulDate)
         {
             bool res = query.UpdateStock(
                 stockNo,
