@@ -57,9 +57,9 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 입고입력
         /// </summary>
-        public JsonResult IpgoAdd(string matNo, string ipchulCnt, string stockType, string ipchulDate, string rmk)
+        public JsonResult IpgoAdd(string stockNo, string matNo, string ipchulCnt, string stockType, string ipchulDate, string rmk)
         {
-            bool res = query.InsertIpgo(matNo, string.IsNullOrEmpty(ipchulCnt) ? 0.0 : Convert.ToDouble(ipchulCnt), stockType, ipchulDate, rmk);
+            bool res = query.InsertStock(stockNo, matNo, string.IsNullOrEmpty(ipchulCnt) ? 0.0 : Convert.ToDouble(ipchulCnt), stockType, ipchulDate, rmk);
 
             return Json(res, JsonRequestBehavior.AllowGet);
         }

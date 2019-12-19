@@ -408,17 +408,17 @@ Where MAT_NO = '" + pMatNo + @"';
         /// <param name="pIpchulDate"></param>
         /// <param name="pRmk"></param>
         /// <returns></returns>
-        public bool InsertIpgo(string pMatNo, double pIpchulCnt, string pStockType, string pIpchulDate, string pRmk)
-        {
-            sb.Clear();
-            sb.Append(@"
-Insert Into STOCK
-(STOCK_NO, MAT_NO, IPCHUL_CNT, STOCK_TYPE, IPCHUL_DATE, STOCK_CNT, RMK) Values
-(STOCK_SEQ.nextval,'" + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + pIpchulCnt + "', '" + pRmk + @"');
-");
+//        public bool InsertIpgo(string pMatNo, double pIpchulCnt, string pStockType, string pIpchulDate, string pRmk)
+//        {
+//            sb.Clear();
+//            sb.Append(@"
+//Insert Into STOCK
+//(STOCK_NO, MAT_NO, IPCHUL_CNT, STOCK_TYPE, IPCHUL_DATE, STOCK_CNT, RMK) Values
+//(STOCK_SEQ.nextval,'" + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + pIpchulCnt + "', '" + pRmk + @"');
+//");
 
-            return db.ExecuteTranaction(sb.ToString());
-        }
+//            return db.ExecuteTranaction(sb.ToString());
+//        }
 
         /// <summary>
         /// 재고추가(출고)
@@ -456,7 +456,7 @@ Where ipchul_date = '" + pIpchulDate + "' And mat_no = '" + pMatNo + "'");
             sb.Append(@"
 Insert Into STOCK
 (STOCK_NO, MAT_NO, IPCHUL_CNT, STOCK_TYPE, IPCHUL_DATE, STOCK_CNT, RMK) Values
-('" + pStockNo + "', '" + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + (stockCnt + pIpchulCnt) + "', '" + pRmk + @"');
+(STOCK_SEQ.nextval,'"  + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + (stockCnt + pIpchulCnt) + "', '" + pRmk + @"');
 --입출고 일자 기준으로 이후 데이터가 있는 경우 이후 데이터의 재고는 +- 처리해줘야함.
 Update STOCK Set
     stock_cnt = stock_cnt + " + pIpchulCnt + @"
