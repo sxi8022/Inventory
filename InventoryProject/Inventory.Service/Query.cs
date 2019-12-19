@@ -206,7 +206,7 @@ Select stock_no
     , ipchul_date 
 From STOCK Sto
 Where stock_type = 'O' And ipchul_date Between '" + pFrom + @"' And '" + pTo + @"'
-Group By stock_no, Sto.cust_cd, Cus.cust_nm, ipchul_date
+Group By stock_no, ipchul_date
 Order By stock_no");
 
             DataTable dt = db.ExecuteQuery(sb.ToString());
