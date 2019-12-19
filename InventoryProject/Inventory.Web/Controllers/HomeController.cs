@@ -24,9 +24,9 @@ namespace Inventory.Web.Controllers
         /// 자재 마스터 조회
         /// </summary>
         /// <returns></returns>
-        public JsonResult MaterialSearch()
+        public JsonResult MaterialSearch(string matNm = "")
         {
-            List<Material> materialList = query.SelectMaterial(Request.Params["matNm"].ToString());
+            List<Material> materialList = query.SelectMaterial(matNm);
 
             return Json(materialList, JsonRequestBehavior.AllowGet);
         }
