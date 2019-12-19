@@ -94,10 +94,9 @@ namespace Inventory.Web.Controllers
         /// 출고 화면 조회
         /// </summary>
         /// <returns></returns>
-        public JsonResult chulgoList()
+        public JsonResult ChulgoList(string fromDate, string toDate)
         {
-            List<Stock> stockOutList = query.SelectOutMaterial(Request.Params["fromDate"].ToString(), Request.Params["toDate"].ToString());
-
+            List<Stock> stockOutList = query.SelectOutMaterial(fromDate, toDate);
             return Json(stockOutList, JsonRequestBehavior.AllowGet);
         }
 
@@ -105,7 +104,7 @@ namespace Inventory.Web.Controllers
         /// 출고 화면 상세 데이터 조회
         /// </summary>
         /// <returns></returns>
-        public JsonResult chulgoSpeList()
+        public JsonResult ChulgoSpeList()
         {
             List<Stock> stockOutSpeList = query.SelectOutMaterialSub(Request.Params["stockNo"].ToString());
 
