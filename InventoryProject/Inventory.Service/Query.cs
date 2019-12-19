@@ -386,6 +386,37 @@ Where MAT_NO = '" + pMatNo + @"';
             return db.ExecuteTranaction(sb.ToString());
         }
 
+        /// <summary>
+        /// 입고 
+        /// </summary>
+        /// <param name="pMatNo"></param>
+        /// <param name="pIpchulCnt"></param>
+        /// <param name="pStockType"></param>
+        /// <param name="pIpchulDate"></param>
+        /// <param name="pRmk"></param>
+        /// <returns></returns>
+        public bool InsertIpgo(string pMatNo, double pIpchulCnt, string pStockType, string pIpchulDate, string pRmk)
+        {
+            sb.Clear();
+            sb.Append(@"
+Insert Into STOCK
+(STOCK_NO, MAT_NO, IPCHUL_CNT, STOCK_TYPE, IPCHUL_DATE, STOCK_CNT, RMK) Values
+(STOCK_SEQ.nextval,'" + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + pIpchulCnt + "', '" + pRmk + @"');
+");
+
+            return db.ExecuteTranaction(sb.ToString());
+        }
+
+        /// <summary>
+        /// 재고추가(출고)
+        /// </summary>
+        /// <param name="pStockNo"></param>
+        /// <param name="pMatNo"></param>
+        /// <param name="pIpchulCnt"></param>
+        /// <param name="pStockType"></param>
+        /// <param name="pIpchulDate"></param>
+        /// <param name="pRmk"></param>
+        /// <returns></returns>
         public bool InsertStock(string pStockNo, string pMatNo, double pIpchulCnt, string pStockType, string pIpchulDate, string pRmk)
         {
             double stockCnt = 0;
