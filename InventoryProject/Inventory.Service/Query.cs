@@ -41,7 +41,7 @@ Where sub_cd = 0
             return matGrpLi;
         }
 
-        public List<MatGrp> SelectMatGrpSub()
+        public List<MatGrp> SelectMatGrpSub(string pCode)
         {//중분류 조회
             sb.Clear();
             sb.Append(@"
@@ -53,7 +53,7 @@ Select M_grp1.grp_cd
     , M_grp2.rmk
 From MAT_GRP M_GRP1
 Join MAT_GRP M_GRP2 On M_grp1.grp_cd = M_grp2.grp_cd 
-Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0");
+Where M_grp1.sub_cd = 0 And M_grp2.sub_cd <> 0 And M_grp1.grp_cd = '" + pCode + "'");
 
             DataTable dt = db.ExecuteQuery(sb.ToString());
             List<MatGrp> matGrpLi = new List<MatGrp>();

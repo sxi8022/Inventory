@@ -31,6 +31,20 @@ namespace Inventory.Web.Controllers
             return Json(materialList, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult MaterialGrpSearch()
+        {
+            List<MatGrp> grpList = query.SelectMatGrp();
+
+            return Json(grpList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult MaterialGrpSubSearch()
+        {
+            List<MatGrp> grpList = query.SelectMatGrpSub(Request.Params["grpCd"].ToString());
+
+            return Json(grpList, JsonRequestBehavior.AllowGet);
+        }
+
         /// <summary>
         /// 입고 화면 조회
         /// </summary>
