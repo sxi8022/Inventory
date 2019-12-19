@@ -247,6 +247,7 @@ Where stock_no = '" + pStockNo + @"'");
 
                 sto.stockNo = Convert.ToInt32(dr["stock_no"].ToString());
                 sto.ipchulDate = dr["ipchul_date"].ToString();
+                sto.stockType = dr["stock_type"].ToString();
                 sto.matNo = Convert.ToInt32(dr["mat_no"].ToString());
                 sto.matNm = dr["mat_nm"].ToString();
                 sto.itemNo = dr["item_no"].ToString();
