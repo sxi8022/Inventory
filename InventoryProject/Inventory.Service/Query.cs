@@ -257,19 +257,25 @@ Where stock_no = '" + pStockNo + @"'");
             return stockLi;
         }
 
-        public List<Stock> SelectStock()
+        public List<Stock> SelectStock(string matNm = null)
         {//자재재고 조회
             sb.Clear();
             sb.Append(@"
 Select Mat.mat_no 
     , Mat.mat_nm 
     , Mat.item_no 
-    , Max(sto.ipchul_cnt) ipchul_cnt
+    , Max(sto.stock_cnt) stock_cnt
 From STOCK Sto
 Join MATERIAL Mat On Mat.mat_no = Sto.mat_no
+");
+
+            if (!string.IsNullOrEmpty(matNm))
+            {
+                sb.AppendFormat(@"Where mat.mat_nm Like '%{0}%'  ", matNm);
+            }
+            sb.Append(@"
 Group By Mat.mat_no, Mat.mat_nm, Mat.item_no
 Order By Mat.mat_nm");
-
             DataTable dt = db.ExecuteQuery(sb.ToString());
             List<Stock> stockLi = new List<Stock>();
             foreach(DataRow dr in dt.Rows)
@@ -279,7 +285,7 @@ Order By Mat.mat_nm");
                 sto.matNo = Convert.ToInt32(dr["mat_no"].ToString());
                 sto.matNm = dr["mat_nm"].ToString();
                 sto.itemNo = dr["item_no"].ToString();
-                sto.ipchulCnt = Convert.ToDouble(dr["ipchul_cnt"].ToString());
+                sto.stockCnt = Convert.ToDouble(dr["stock_cnt"].ToString());
 
                 stockLi.Add(sto);
             }

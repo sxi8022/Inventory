@@ -180,5 +180,10 @@ namespace Inventory.Web.Controllers
                 Request.Params["rmk"].ToString()
             );
         }
+
+        public JsonResult StockSearch()
+        {
+            return Json(query.SelectStock(Request.Params["matNm"].ToString()), JsonRequestBehavior.AllowGet);
+        }
     }
 }
