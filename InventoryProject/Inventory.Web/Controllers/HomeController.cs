@@ -5,6 +5,7 @@ using Inventory.Domain;
 using System.Data;
 using System.Collections.Generic;
 using System;
+using System.Xml.Linq;
 
 namespace Inventory.Web.Controllers
 {
@@ -213,8 +214,9 @@ namespace Inventory.Web.Controllers
         /// </summary>
         public void MatGrpUpdate()
         {
-            query.UpdatetMatGrp(
+            query.UpdateMatGrpSub(
                 Request.Params["grpCd"].ToString(),
+                Request.Params["subCd"].ToString(),
                 Request.Params["grpNm"].ToString(),
                 Request.Params["rmk"].ToString()
                 );
@@ -232,7 +234,7 @@ namespace Inventory.Web.Controllers
             query.UpdateMatGrpSub(
                 Request.Params["grpCd"].ToString(),
                 Request.Params["subCd"].ToString(),
-                Request.Params["grpNm"].ToString(),
+                Request.Params["grpSubNm"].ToString(),
                 Request.Params["rmk"].ToString()
                 );
         }
@@ -243,6 +245,18 @@ namespace Inventory.Web.Controllers
         public void MatGrpAdd()
         {
             query.InsertMatGrp(Request.Params["grpNm"].ToString(), Request.Params["rmk"].ToString());
+        }
+
+        public void MatGrpSubAdd()
+        {
+            query.InsertMatGrpSub(Request.Params["grpCd"].ToString(), Request.Params["grpNm"].ToString(), Request.Params["rmk"].ToString());
+        }
+
+        public JsonResult MatGrpSubDelete()
+        {
+            Dictionary<string, bool> result = new Dictionary<string, bool>();
+            result.Add("aa", query.DeleteMatGrpSub(Request.Params["grpCd"].ToString(), Request.Params["subCd"].ToString()));
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         //public JsonResult MaterialGrpSubSearch()

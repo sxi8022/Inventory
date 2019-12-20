@@ -330,6 +330,15 @@ Where GRP_CD = '" + pGrpCd + @"' And SUB_CD = '0';
         {
             sb.Clear();
             sb.Append(@"
+Select *
+From Mat_GRP
+Where grp_cd = '" + pGrpCd + "' And sub_cd <> '0'");
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+            if (dt.Rows.Count > 0)
+                return false;
+
+            sb.Clear();
+            sb.Append(@"
 Delete From MAT_GRP
 Where GRP_CD = '" + pGrpCd + @"' And SUB_CD = '0';
 ");
@@ -337,16 +346,47 @@ Where GRP_CD = '" + pGrpCd + @"' And SUB_CD = '0';
             return db.ExecuteTranaction(sb.ToString());
         }
 
-        public bool InsertMatGrpSub(string pGrpCd, string pSubCd, string pSeq, string pGrpNm, string pRmk)
+        public bool InsertMatGrpSub(string pGrpCd, string pGrpNm, string pRmk)
         {
+            sb.Clear();
+            sb.Append(@"
+Select '00' || (Max(sub_cd) + 1)
+From mat_grp
+Where grp_cd = '" + pGrpCd + "'");
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+            string subCd = "";
+            if (dt.Rows.Count > 0)
+                subCd = dt.Rows[0][0].ToString();
+
             sb.Clear();
             sb.Append(@"
 Insert Into MAT_GRP
 (GRP_CD, SUB_CD, SEQ, GRP_NM, RMK) Values
-('" + pGrpCd + "', '" + pSubCd + "', '" + pSeq + "', '" + pGrpNm + "', '" + pRmk + @"');
+('" + pGrpCd + "', '" + subCd + "', mat_grp_seq.nextval, '" + pGrpNm + "', '" + pRmk + @"');
 ");
             return db.ExecuteTranaction(sb.ToString());
         }
+
+//        public bool InsertMatGrp(string pGrpNm, string pRmk)
+//        {
+//            sb.Clear();
+//            sb.Append(@"
+//Select '00' || (Max(grp_cd) + 1)
+//From mat_grp");
+//            DataTable dt = db.ExecuteQuery(sb.ToString());
+//            string grpCd = "";
+//            if (dt.Rows.Count > 0)
+//                grpCd = dt.Rows[0][0].ToString();
+
+//            sb.Clear();
+//            sb.Append(@"
+//Insert Into mat_grp
+//(GRP_CD, SUB_CD, SEQ, GRP_NM, RMK) Values
+//('" + grpCd + "', '0', mat_grp_seq.nextval, '" + pGrpNm + "', '" + pRmk + "')");
+
+//            return db.ExecuteTranaction(sb.ToString());
+//        }
+
 
         public bool UpdateMatGrpSub(string pGrpCd, string pSubCd, string pGrpNm, string pRmk)
         {
@@ -361,7 +401,7 @@ Where GRP_CD = '" + pGrpCd + "' And SUB_CD = '" + pSubCd + @"';
             return db.ExecuteTranaction(sb.ToString());
         }
 
-        public bool DeleteMatGupSub(string pGrpCd, string pSubCd)
+        public bool DeleteMatGrpSub(string pGrpCd, string pSubCd)
         {
             sb.Clear();
             sb.Append(@"
