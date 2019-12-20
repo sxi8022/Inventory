@@ -4,7 +4,6 @@ using Inventory.Service;
 using Inventory.Domain;
 using System.Data;
 using System.Collections.Generic;
-using System;
 
 namespace Inventory.Web.Controllers
 {
@@ -32,6 +31,20 @@ namespace Inventory.Web.Controllers
             return Json(materialList, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult MaterialGrpSearch()
+        {
+            List<MatGrp> grpList = query.SelectMatGrp();
+
+            return Json(grpList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult MaterialGrpSubSearch()
+        {
+            List<MatGrp> grpList = query.SelectMatGrpSub(Request.Params["grpCd"].ToString());
+
+            return Json(grpList, JsonRequestBehavior.AllowGet);
+        }
+
         /// <summary>
         /// 입고 화면 조회
         /// </summary>
@@ -57,9 +70,9 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 입고입력
         /// </summary>
-        public JsonResult IpgoAdd(string stockNo, string matNo, string ipchulCnt, string stockType, string ipchulDate, string rmk)
+        public JsonResult IpgoAdd(string pMatNo, double pIpchulCnt, string pStockType, string pIpchulDate, string pRmk)
         {
-            bool res = query.InsertStock(stockNo, matNo, string.IsNullOrEmpty(ipchulCnt) ? 0.0 : Convert.ToDouble(ipchulCnt), stockType, ipchulDate, rmk);
+            bool res = query.InsertIpgo(pMatNo, pIpchulCnt, pStockType, pIpchulDate, pRmk);
 
             return Json(res, JsonRequestBehavior.AllowGet);
         }
@@ -67,15 +80,15 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 입고수정
         /// </summary>
-        public JsonResult IpgoUpDate(string stockNo, string matNo, string ipchulCnt, string stockType, string rmk, string ipchulDate)
+        public JsonResult IpgoUpdate(string pStockNo, string pMatNo, double pIpchulCnt, string pStockType, string pRmk, string pDate)
         {
             bool res = query.UpdateStock(
-                stockNo,
-                matNo,
-                string.IsNullOrEmpty(ipchulCnt) ? 0.0 : Convert.ToDouble(ipchulCnt),
-                stockType,
-                rmk,
-                ipchulDate
+                pStockNo,
+                pMatNo,
+                pIpchulCnt,
+                pStockType,
+                pRmk,
+                pDate
             );
             return Json(res, JsonRequestBehavior.AllowGet);
         }
@@ -83,9 +96,9 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 입고삭제
         /// </summary>
-        public JsonResult IpgoDelete(string stockNo, string matNo, string ipchulDate, string pType)
+        public JsonResult IpgoDelete(string pStockNo, string pMatNo, string pDate, string pType)
         {
-            bool res = query.DeleteStock(stockNo, matNo, ipchulDate, pType);
+            bool res = query.DeleteStock(pMatNo, pMatNo, pDate, pType);
 
             return Json(res, JsonRequestBehavior.AllowGet);
         }
@@ -94,9 +107,10 @@ namespace Inventory.Web.Controllers
         /// 출고 화면 조회
         /// </summary>
         /// <returns></returns>
-        public JsonResult ChulgoList(string fromDate, string toDate)
+        public JsonResult chulgoList()
         {
-            List<Stock> stockOutList = query.SelectOutMaterial(fromDate, toDate);
+            List<Stock> stockOutList = query.SelectOutMaterial(Request.Params["fromDate"].ToString(), Request.Params["toDate"].ToString());
+
             return Json(stockOutList, JsonRequestBehavior.AllowGet);
         }
 
@@ -104,7 +118,7 @@ namespace Inventory.Web.Controllers
         /// 출고 화면 상세 데이터 조회
         /// </summary>
         /// <returns></returns>
-        public JsonResult ChulgoSpeList()
+        public JsonResult chulgoSpeList()
         {
             List<Stock> stockOutSpeList = query.SelectOutMaterialSub(Request.Params["stockNo"].ToString());
 
@@ -114,9 +128,9 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 출고추가
         /// </summary>
-        public JsonResult ChulgoAdd(string stockNo, string matNo, string ipchulCnt, string stockType, string ipchulDate, string rmk)
+        public JsonResult ChulgoAdd(string pStockNo, string pMatNo, double pIpchulCnt, string pStockType, string pIpchulDate, string pRmk)
         {
-            bool res = query.InsertStock(stockNo, matNo, string.IsNullOrEmpty(ipchulCnt) ? 0.0 : Convert.ToDouble(ipchulCnt), stockType, ipchulDate, rmk);
+            bool res = query.InsertStock(pStockNo, pMatNo, pIpchulCnt, pStockType, pIpchulDate, pRmk);
 
             return Json(res, JsonRequestBehavior.AllowGet);
         }
@@ -124,15 +138,15 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 출고수정
         /// </summary>
-        public JsonResult ChulgoUpDate(string stockNo, string matNo, string ipchulCnt, string stockType, string rmk, string ipchulDate)
+        public JsonResult ChulgoUpdate(string pStockNo, string pMatNo, double pIpchulCnt, string pStockType, string pRmk, string pDate)
         {
             bool res = query.UpdateStock(
-                stockNo,
-                matNo,
-                string.IsNullOrEmpty(ipchulCnt) ? 0.0 : Convert.ToDouble(ipchulCnt),
-                stockType,
-                rmk,
-                ipchulDate
+                pStockNo,
+                pMatNo,
+                pIpchulCnt,
+                pStockType,
+                pRmk,
+                pDate
             );
             return Json(res, JsonRequestBehavior.AllowGet);
         }
@@ -140,9 +154,9 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 출고삭제
         /// </summary>
-        public JsonResult ChulgoDelete(string stockNo, string matNo, string ipchulDate, string pType)
+        public JsonResult ChulgoDelete(string pStockNo, string pMatNo, string pDate, string pType)
         {
-            bool res = query.DeleteStock(stockNo, matNo, ipchulDate, pType);
+            bool res = query.DeleteStock(pMatNo, pMatNo, pDate, pType);
 
             return Json(res, JsonRequestBehavior.AllowGet);
         }
