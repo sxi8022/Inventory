@@ -185,5 +185,10 @@ namespace Inventory.Web.Controllers
         {
             return Json(query.SelectStock(Request.Params["matNm"].ToString()), JsonRequestBehavior.AllowGet);
         }
+
+        public void MaterialDelete(string matNo)
+        {
+            query.DeleteMaterial(matNo);
+        }
     }
 }
