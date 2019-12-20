@@ -219,6 +219,11 @@ namespace Inventory.Web.Controllers
                 Request.Params["rmk"].ToString()
                 );
         }
+        
+        public void MatGrpDelete()
+        {
+            query.DeleteMatGrp(Request.Params["grpCd"].ToString());
+        }
         /// <summary>
         /// 소분류 수정
         /// </summary>
@@ -239,5 +244,12 @@ namespace Inventory.Web.Controllers
         {
             query.InsertMatGrp(Request.Params["grpNm"].ToString(), Request.Params["rmk"].ToString());
         }
+
+        //public JsonResult MaterialGrpSubSearch()
+        //{
+        //    List<MatGrp> grpList = query.SelectMatGrpSub(Request.Params["grpCd"].ToString());
+        //    return Json(grpList, JsonRequestBehavior.AllowGet);
+        //}
+
     }
 }
