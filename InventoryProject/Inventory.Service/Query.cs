@@ -206,7 +206,7 @@ Select stock_no
     , ipchul_date 
 From STOCK Sto
 Where stock_type = 'O' And ipchul_date Between '" + pFrom + @"' And '" + pTo + @"'
-Group By stock_no, Sto.cust_cd, Cus.cust_nm, ipchul_date
+Group By stock_no, ipchul_date
 Order By stock_no");
 
             DataTable dt = db.ExecuteQuery(sb.ToString());
@@ -229,6 +229,7 @@ Order By stock_no");
             sb.Append(@"
 Select stock_no 
     , ipchul_date
+    , stock_type
     , Mat.mat_no 
     , Mat.mat_nm 
     , Mat.item_no 
@@ -246,6 +247,7 @@ Where stock_no = '" + pStockNo + @"'");
 
                 sto.stockNo = Convert.ToInt32(dr["stock_no"].ToString());
                 sto.ipchulDate = dr["ipchul_date"].ToString();
+                sto.stockType = dr["stock_type"].ToString();
                 sto.matNo = Convert.ToInt32(dr["mat_no"].ToString());
                 sto.matNm = dr["mat_nm"].ToString();
                 sto.itemNo = dr["item_no"].ToString();
@@ -415,17 +417,17 @@ Where MAT_NO = '" + pMatNo + @"';
         /// <param name="pIpchulDate"></param>
         /// <param name="pRmk"></param>
         /// <returns></returns>
-        public bool InsertIpgo(string pMatNo, double pIpchulCnt, string pStockType, string pIpchulDate, string pRmk)
-        {
-            sb.Clear();
-            sb.Append(@"
-Insert Into STOCK
-(STOCK_NO, MAT_NO, IPCHUL_CNT, STOCK_TYPE, IPCHUL_DATE, STOCK_CNT, RMK) Values
-(STOCK_SEQ.nextval,'" + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + pIpchulCnt + "', '" + pRmk + @"');
-");
+//        public bool InsertIpgo(string pMatNo, double pIpchulCnt, string pStockType, string pIpchulDate, string pRmk)
+//        {
+//            sb.Clear();
+//            sb.Append(@"
+//Insert Into STOCK
+//(STOCK_NO, MAT_NO, IPCHUL_CNT, STOCK_TYPE, IPCHUL_DATE, STOCK_CNT, RMK) Values
+//(STOCK_SEQ.nextval,'" + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + pIpchulCnt + "', '" + pRmk + @"');
+//");
 
-            return db.ExecuteTranaction(sb.ToString());
-        }
+//            return db.ExecuteTranaction(sb.ToString());
+//        }
 
         /// <summary>
         /// 재고추가(출고)
@@ -463,7 +465,7 @@ Where ipchul_date = '" + pIpchulDate + "' And mat_no = '" + pMatNo + "'");
             sb.Append(@"
 Insert Into STOCK
 (STOCK_NO, MAT_NO, IPCHUL_CNT, STOCK_TYPE, IPCHUL_DATE, STOCK_CNT, RMK) Values
-('" + pStockNo + "', '" + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + (stockCnt + tempCnt) + "', '" + pRmk + @"');
+(STOCK_SEQ.nextval,'"  + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + (stockCnt + pIpchulCnt) + "', '" + pRmk + @"');
 --입출고 일자 기준으로 이후 데이터가 있는 경우 이후 데이터의 재고는 +- 처리해줘야함.
 Update STOCK Set
     stock_cnt = stock_cnt + " + pIpchulCnt + @"
