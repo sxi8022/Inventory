@@ -93,6 +93,8 @@ namespace Inventory.Web.Controllers
         /// <summary>
         /// 출고 화면 조회
         /// </summary>
+        /// <param name="fromDate"></param>
+        /// <param name="toDate"></param>
         /// <returns></returns>
         public JsonResult ChulgoList(string fromDate, string toDate)
         {
