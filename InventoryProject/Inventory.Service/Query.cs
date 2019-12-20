@@ -294,13 +294,22 @@ Order By Mat.mat_nm");
             return stockLi;
         }
 
-        public bool InsertMatGrp(string pGrpCd, string pSeq, string pGrpNm, string pRmk)
+        public bool InsertMatGrp(string pGrpNm, string pRmk)
         {
+            sb.Clear();
+            sb.Append(@"
+Select '00' || (Max(grp_cd) + 1)
+From mat_grp");
+            DataTable dt = db.ExecuteQuery(sb.ToString());
+            string grpCd = "";
+            if (dt.Rows.Count > 0)
+                grpCd = dt.Rows[0][0].ToString();
+
             sb.Clear();
             sb.Append(@"
 Insert Into mat_grp
 (GRP_CD, SUB_CD, SEQ, GRP_NM, RMK) Values
-('" + pGrpCd + "', '0', '" + pSeq + "', '" + pGrpNm + "', '" + pRmk + "')");
+('" + grpCd + "', '0', mat_grp_seq.nextval, '" + pGrpNm + "', '" + pRmk + "')");
 
             return db.ExecuteTranaction(sb.ToString());
         }
@@ -311,7 +320,7 @@ Insert Into mat_grp
             sb.Append(@"
 Update MAT_GRP Set
     GRP_NM = '" + pGrpNm + @"'
-    , RMK = ''
+    , RMK = '" + pRmk + @"'
 Where GRP_CD = '" + pGrpCd + @"' And SUB_CD = '0';
 ");
             return db.ExecuteTranaction(sb.ToString());
@@ -433,7 +442,7 @@ Where MAT_NO = '" + pMatNo + @"';
         public bool InsertStock(string pStockNo, string pMatNo, double pIpchulCnt, string pStockType, string pIpchulDate, string pRmk)
         {
             double stockCnt = 0;
-
+            double tempCnt = 0;
             sb.Clear();
             //데이터 입력하는 일자의 최대 stock_no일때의 재고수량 확인
             sb.Append(@"
@@ -451,7 +460,7 @@ Where ipchul_date = '" + pIpchulDate + "' And mat_no = '" + pMatNo + "'");
                 double.TryParse(dt.Rows[0][0].ToString(), out stockCnt);
 
             if (pStockType == "O")//출고데이터인 경우 재고를 빼줘야 함
-                pIpchulCnt = pIpchulCnt - pIpchulCnt - pIpchulCnt;
+                tempCnt = pIpchulCnt - pIpchulCnt - pIpchulCnt;
             sb.Clear();
             sb.Append(@"
 Insert Into STOCK
