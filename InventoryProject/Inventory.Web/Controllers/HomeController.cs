@@ -149,11 +149,25 @@ namespace Inventory.Web.Controllers
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 
+        //public JsonResult MaterialGrpSearch()
+        //{
+        //    return Json(query.SelectMatGrp(), JsonRequestBehavior.AllowGet);
+        //}
+
+        /// <summary>
+        /// 그룹조회
+        /// </summary>
+        /// <returns></returns>
         public JsonResult MaterialGrpSearch()
         {
-            return Json(query.SelectMatGrp(), JsonRequestBehavior.AllowGet);
+            List<MatGrp> grpList = query.SelectMatGrp();
+            return Json(grpList, JsonRequestBehavior.AllowGet);
         }
-
+        
+        /// <summary>
+        /// 그룹소분류조회
+        /// </summary>
+        /// <returns></returns>
         public JsonResult MaterialSubGrpSearch()
         {
             return Json(query.SelectMatGrpSub(Request.Params["grpCd"].ToString()), JsonRequestBehavior.AllowGet);
@@ -192,6 +206,38 @@ namespace Inventory.Web.Controllers
         public void MaterialDelete(string matNo)
         {
             query.DeleteMaterial(matNo);
+        }
+
+        /// <summary>
+        /// 대분류 수정
+        /// </summary>
+        public void MatGrpUpdate()
+        {
+            query.UpdatetMatGrp(
+                Request.Params["grpCd"].ToString(),
+                Request.Params["grpNm"].ToString(),
+                Request.Params["rmk"].ToString()
+                );
+        }
+        /// <summary>
+        /// 소분류 수정
+        /// </summary>
+        public void MatGrpSubUpdate()
+        {
+            query.UpdateMatGrpSub(
+                Request.Params["grpCd"].ToString(),
+                Request.Params["subCd"].ToString(),
+                Request.Params["grpNm"].ToString(),
+                Request.Params["rmk"].ToString()
+                );
+        }
+
+        /// <summary>
+        /// 추가
+        /// </summary>
+        public void MatGrpAdd()
+        {
+            query.InsertMatGrp(Request.Params["grpNm"].ToString(), Request.Params["rmk"].ToString());
         }
     }
 }
