@@ -470,7 +470,7 @@ Where MAT_NO = '" + pMatNo + @"';
 //        }
 
         /// <summary>
-        /// 재고추가(출고)
+        /// 재고추가
         /// </summary>
         /// <param name="pStockNo"></param>
         /// <param name="pMatNo"></param>
