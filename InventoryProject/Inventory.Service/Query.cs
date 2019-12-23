@@ -508,7 +508,7 @@ Insert Into STOCK
 (STOCK_SEQ.nextval,'"  + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + (stockCnt + tempCnt) + "', '" + pRmk + @"');
 --입출고 일자 기준으로 이후 데이터가 있는 경우 이후 데이터의 재고는 +- 처리해줘야함.
 Update STOCK Set
-    stock_cnt = stock_cnt + " + pIpchulCnt + @"
+    stock_cnt = stock_cnt + " + tempCnt + @"
 Where mat_no = '" + pMatNo + "' And ipchul_date >= '" + pIpchulDate + "' And ipchul_date || stock_no > '" + pIpchulDate + @"' || (Select Max(stock_no) From Stock);
 ");
             return db.ExecuteTranaction(sb.ToString());
