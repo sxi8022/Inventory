@@ -493,7 +493,7 @@ Join (
     From Stock
     Where ipchul_date <= '" + pIpchulDate + "' And mat_no = '" + pMatNo + @"'
 ) Num On Num.stock_no = Sto.stock_no
-Where ipchul_date = '" + pIpchulDate + "' And mat_no = '" + pMatNo + "'");
+Where mat_no = '" + pMatNo + "'");
             
             DataTable dt = db.ExecuteQuery(sb.ToString());
             if (dt.Rows.Count > 0)
