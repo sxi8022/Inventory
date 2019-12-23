@@ -482,7 +482,7 @@ Where MAT_NO = '" + pMatNo + @"';
         public bool InsertStock(string pStockNo, string pMatNo, double pIpchulCnt, string pStockType, string pIpchulDate, string pRmk)
         {
             double stockCnt = 0;
-            double tempCnt = 0;
+            double tempCnt = pIpchulCnt;
             sb.Clear();
             //데이터 입력하는 일자의 최대 stock_no일때의 재고수량 확인
             sb.Append(@"
@@ -505,7 +505,7 @@ Where ipchul_date = '" + pIpchulDate + "' And mat_no = '" + pMatNo + "'");
             sb.Append(@"
 Insert Into STOCK
 (STOCK_NO, MAT_NO, IPCHUL_CNT, STOCK_TYPE, IPCHUL_DATE, STOCK_CNT, RMK) Values
-(STOCK_SEQ.nextval,'"  + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + (stockCnt + pIpchulCnt) + "', '" + pRmk + @"');
+(STOCK_SEQ.nextval,'"  + pMatNo + "', '" + pIpchulCnt + "', '" + pStockType + "', '" + pIpchulDate + "', '" + (stockCnt + tempCnt) + "', '" + pRmk + @"');
 --입출고 일자 기준으로 이후 데이터가 있는 경우 이후 데이터의 재고는 +- 처리해줘야함.
 Update STOCK Set
     stock_cnt = stock_cnt + " + pIpchulCnt + @"
