@@ -37,24 +37,25 @@ namespace WebApi.Controllers
         // PUT api/<controller>/5
         // public void Put(int id, Material material)
         [HttpPut]
-        public string Put(int id, Material material)
+        public void Put(Material material)
         {
-            return id.ToString();
-            //if (material != null)
-            //{
-            //    query.InsertMaterial(
-            //        material.matNm,
-            //        material.itemNo,
-            //        material.grpCd,
-            //        material.subGrpCd,
-            //        material.rmk
-            //    );
-            //}
+            if (material != null)
+            {
+                query.UpdateMaterial(
+                    material.matNo.ToString(),
+                    material.matNm,
+                    material.itemNo,
+                    material.grpCd,
+                    material.subGrpCd,
+                    material.rmk
+                );
+            }
         }
 
         // DELETE api/<controller>/5
-        public void Delete()  
-       { 
-       }
+        public void Delete(string id)  
+        {
+            query.DeleteMaterial(id);
+        }
     }
 }

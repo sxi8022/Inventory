@@ -26,25 +26,26 @@ namespace WebApi.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public void Post(MatGrp matGrp)
         {
+            query.InsertMatGrp(matGrp.grpNm, matGrp.rmk);
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody] Material material)
+        public void Put(MatGrp matGrp)
         {
-            query.InsertMaterial(
-                material.matNm,
-                material.itemNo,
-                material.grpCd,
-                material.subGrpCd,
-                material.rmk
+            query.UpdateMatGrpSub(
+                matGrp.grpCd,
+                matGrp.subCd,
+                matGrp.grpNm,
+                matGrp.rmk
             );
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public void Delete(string id)
         {
+            query.DeleteMatGrp(id);
         }
     }
 }
