@@ -16,6 +16,17 @@ namespace Inventory.Web.Controllers
     {
         Query query = new Query();
 
+        public Material[] Get()
+        {
+            return new Material[]
+            {
+                new Material
+                {
+                    matNo = 1
+                }
+            };
+        }
+
         // GET: Home
         public JsonResult Index()
         {
