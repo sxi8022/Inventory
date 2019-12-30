@@ -85,9 +85,11 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         [HttpDelete]
-        public void Delete(string stockNo, string matNo, string ipchulDate, string pType)
+        public bool Delete(string stockNo, string matNo, string ipchulDate, string stockType)
         {
-            query.DeleteStock(stockNo, matNo, ipchulDate, pType);
+            bool res = false;
+            res = query.DeleteStock(stockNo, matNo, ipchulDate, stockType);
+            return res;
         }
     }
 }
