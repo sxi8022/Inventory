@@ -137,6 +137,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChulgoController.cs" />
     <Compile Include="Controllers\IpgoController.cs" />
     <Compile Include="Controllers\MaterialController.cs" />
@@ -177,8 +178,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Chulgo\" />
-    <Folder Include="Views\Ipgo\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Inventory.Domain\Inventory.Domain.csproj">
@@ -188,6 +187,10 @@
     <ProjectReference Include="..\Inventory.Service\Inventory.Service.csproj">
       <Project>{4761f261-9f6c-4ce5-8d99-351bc2a69b2a}</Project>
       <Name>Inventory.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Inventory.Web\Inventory.Web.csproj">
+      <Project>{3fda9ca5-00b4-4168-b06a-cd0cc9c6a842}</Project>
+      <Name>Inventory.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
