@@ -89,6 +89,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MaterialController.cs" />
     <Compile Include="Controllers\MaterialGrpController.cs" />
+    <Compile Include="Controllers\MaterialSubGrpController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
