@@ -95,7 +95,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web.config.bak" />
     <None Include="Web.config.Debug.bak">
       <DependentUpon>Web.config.bak</DependentUpon>
