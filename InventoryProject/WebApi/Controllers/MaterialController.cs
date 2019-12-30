@@ -12,7 +12,7 @@ namespace WebApi.Controllers
     public class MaterialController : ApiController
     {
         Query query = new Query();
-
+         
         public List<Material> Get(string id = "")
         {
             return query.SelectMaterial(id);
