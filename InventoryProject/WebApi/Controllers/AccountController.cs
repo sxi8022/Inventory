@@ -18,15 +18,24 @@ namespace WebApi.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpPost]
-        public LoginViewModel Post(string userid, string password)
+        public LoginViewModel Post(LoginViewModel loginData)
         {
             LoginViewModel model = new LoginViewModel();
 
-            if (userid == "admin" && password == "1")
+            if (loginData != null)
             {
-                model.userId = "admin";
-                model.passWord = "1";
-                model.state = "SUCCESS";
+                if (loginData.userId == "admin" && loginData.passWord == "1")
+                {
+                    model.userId = "admin";
+                    model.passWord = "1";
+                    model.state = "SUCCESS";
+                }
+                else
+                {
+                    model.userId = string.Empty;
+                    model.passWord = string.Empty;
+                    model.state = "FAIL";
+                }
             }
             else
             {
@@ -34,7 +43,6 @@ namespace WebApi.Controllers
                 model.passWord = string.Empty;
                 model.state = "FAIL";
             }
-
             return model;
         }
     }
