@@ -1,4 +1,4 @@
-﻿using Inventory.Web.Models;
+﻿using Inventory.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
