@@ -21,10 +21,5 @@ namespace Inventory.WebApi.Models
         /// 로그인상태
         /// </summary>
         public string state { get; set; }
-
-        /// <summary>
-        /// 키값
-        /// </summary>
-        public string formKey { get; set; }
     }
 }
