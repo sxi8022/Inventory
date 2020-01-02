@@ -29,25 +29,66 @@ namespace Inventory.WebApi.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
-
-            if (user == null)
+            //for choi : Entity Framwork를 사용하지 않음
+            if (context.UserName == "admin" && context.Password == "admin")
             {
-                context.SetError("invalid_grant", "사용자 이름 또는 암호가 잘못되었습니다.");
-                return;
+                //쿠키를 만든다. 사용자명과 User권한을 쿠키에 넣어서 보내준다. 클라이언트가 쿠키를 다시 보내주면 사용자명과 권한을 추출해 통과시킨다
+                var oAuthIdentity = new ClaimsIdentity(context.Options.AuthenticationType);
+                oAuthIdentity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+                oAuthIdentity.AddClaim(new Claim(ClaimTypes.Role, "User"));
+
+                context.Validated(oAuthIdentity); //인증 ok
+
+                var cookiesIdentity = new ClaimsIdentity(context.Options.AuthenticationType);
+
+                AuthenticationProperties properties = CreateProperties(context.UserName);
+                AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
+                context.Validated(ticket);
+
+                //context.Request.Context.Authentication.SignIn(cookiesIdentity);  //이게 뭐하는 거지? 
             }
 
-            ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
-               OAuthDefaults.AuthenticationType);
-            ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
-                CookieAuthenticationDefaults.AuthenticationType);
+            // var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
-            AuthenticationProperties properties = CreateProperties(user.UserName);
-            AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
-            context.Validated(ticket);
-            context.Request.Context.Authentication.SignIn(cookiesIdentity);
+            // 강동관 과장님
+            //var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+            //if (context.UserName == "admin" && context.Password == "admin")
+            //{
+            //    identity.AddClaim(new Claim(ClaimTypes.Role, "admin"));
+            //    identity.AddClaim(new Claim("username", "admin"));
+            //    identity.AddClaim(new Claim(ClaimTypes.Name, "Sourav Mondal"));
+            //    context.Validated(identity);
+            //}
+            //else if (context.UserName == "user" && context.Password == "user")
+            //{
+            //    identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+            //    identity.AddClaim(new Claim("username", "user"));
+            //    identity.AddClaim(new Claim(ClaimTypes.Name, "Suresh Sha"));
+            //    context.Validated(identity);
+            //}
+            //else
+            //{
+            //    context.SetError("invalid grant", "provided username and password is incorrect");
+            //    return;
+            //}
+
+            //ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+
+            //if (user == null)
+            //{
+            //    context.SetError("invalid_grant", "사용자 이름 또는 암호가 잘못되었습니다.");
+            //    return;
+            //}
+
+            //ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
+            //   OAuthDefaults.AuthenticationType);
+            //ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
+            //    CookieAuthenticationDefaults.AuthenticationType);
+
+            //AuthenticationProperties properties = CreateProperties(user.UserName);
+            //AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
+            //context.Validated(ticket);
+            //context.Request.Context.Authentication.SignIn(cookiesIdentity);
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)

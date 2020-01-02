@@ -23,8 +23,8 @@ namespace Inventory.WebApi
         public void ConfigureAuth(IAppBuilder app)
         {
             // 요청당 단일 인스턴스를 사용하도록 db 컨텍스트와 사용자 관리자 구성합니다.
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
-            app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+            // app.CreatePerOwinContext(ApplicationDbContext.Create);
+            // app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
 
             // 응용 프로그램이 쿠키를 사용하여 로그인한 사용자에 대한 정보를 저장하도록 설정합니다.
             // 또한 쿠키를 사용하여 타사 로그인 공급자를 통한 사용자 로그인 관련 정보를 일시적으로 저장하도록 설정합니다.
