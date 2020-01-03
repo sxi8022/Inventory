@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace WebApi.Controllers
 {
+    [Authorize]
     public class MaterialController : ApiController
     {
         Query query = new Query();

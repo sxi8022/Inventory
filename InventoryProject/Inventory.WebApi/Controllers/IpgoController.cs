@@ -9,6 +9,7 @@ namespace WebApi.Controllers
     /// <summary>
     /// 입고
     /// </summary>
+    [Authorize]
     public class IpgoController : ApiController
     {
         Query query = new Query();

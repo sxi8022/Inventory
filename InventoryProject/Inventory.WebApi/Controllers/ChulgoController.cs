@@ -8,6 +8,10 @@ using System.Web.Http;
 
 namespace WebApi.Controllers
 {
+    /// <summary>
+    /// 출고
+    /// </summary>
+    [Authorize]
     public class ChulgoController : ApiController
     {
         Query query = new Query();
