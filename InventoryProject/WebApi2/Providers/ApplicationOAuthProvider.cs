@@ -9,9 +9,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using Inventory.WebApi.Models;
+using WebApi2.Models;
 
-namespace Inventory.WebApi.Providers
+namespace WebApi2.Providers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
@@ -27,55 +27,15 @@ namespace Inventory.WebApi.Providers
             _publicClientId = publicClientId;
         }
 
+        /// <summary>
+        ///  토큰을 발급 할 유저 검사
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            //for choi : Entity Framwork를 사용하지 않음
-            //if (context.UserName == "admin" && context.Password == "admin")
-            //{
-            //    //쿠키를 만든다. 사용자명과 User권한을 쿠키에 넣어서 보내준다. 클라이언트가 쿠키를 다시 보내주면 사용자명과 권한을 추출해 통과시킨다
-            //    var oAuthIdentity = new ClaimsIdentity(context.Options.AuthenticationType);
-            //    oAuthIdentity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-            //    oAuthIdentity.AddClaim(new Claim(ClaimTypes.Role, "User"));
+            //var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
-            //    context.Validated(oAuthIdentity); //인증 ok
-
-            //    var cookiesIdentity = new ClaimsIdentity(context.Options.AuthenticationType);
-
-            //    AuthenticationProperties properties = CreateProperties(context.UserName);
-            //    AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
-            //    context.Validated(ticket);
-
-            //    //context.Request.Context.Authentication.SignIn(cookiesIdentity);  //이게 뭐하는 거지? 
-            //}
-
-            // var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-
-            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            if (context.UserName == "admin" && context.Password == "admin")
-            {
-                identity.AddClaim(new Claim(ClaimTypes.Role, "admin"));
-                identity.AddClaim(new Claim("username", "admin"));
-                identity.AddClaim(new Claim(ClaimTypes.Name, "Sourav Mondal"));
-                context.Validated(identity);
-            }
-            else if (context.UserName == "user" && context.Password == "user")
-            {
-                identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
-                identity.AddClaim(new Claim("username", "user"));
-                identity.AddClaim(new Claim(ClaimTypes.Name, "Suresh Sha"));
-                context.Validated(identity);
-            }
-            else
-            {
-                context.SetError("invalid grant", "provided username and password is incorrect");
-                return;
-            }
-
-            var cookiesIdentity = new ClaimsIdentity(context.Options.AuthenticationType);
-            AuthenticationProperties properties = CreateProperties(context.UserName);
-            AuthenticationTicket ticket = new AuthenticationTicket(cookiesIdentity, properties);
-            context.Validated(ticket);
-            context.Request.Context.Authentication.SignIn(cookiesIdentity);
             //ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
 
             //if (user == null)
@@ -84,15 +44,30 @@ namespace Inventory.WebApi.Providers
             //    return;
             //}
 
-            //ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
-            //   OAuthDefaults.AuthenticationType);
-            //ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
-            //    CookieAuthenticationDefaults.AuthenticationType);
-
-            //AuthenticationProperties properties = CreateProperties(user.UserName);
-            //AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
-            //context.Validated(ticket);
-            //context.Request.Context.Authentication.SignIn(cookiesIdentity);
+            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+            if (context.UserName == "admin" && context.Password == "admin")
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, "admin"));
+                identity.AddClaim(new Claim("username", "admin"));
+                identity.AddClaim(new Claim(ClaimTypes.Name, "Sourav Mondal"));
+            }
+            else if (context.UserName == "user" && context.Password == "user")
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+                identity.AddClaim(new Claim("username", "user"));
+                identity.AddClaim(new Claim(ClaimTypes.Name, "Suresh Sha"));
+            }
+            else
+            {
+                context.SetError("invalid grant", "provided username and password is incorrect");
+                return;
+            }
+            var cookieIdentity = new ClaimsIdentity(context.Options.AuthenticationType);
+            AuthenticationProperties properties = CreateProperties(context.UserName);
+            AuthenticationTicket ticket = new AuthenticationTicket(cookieIdentity, properties);
+            context.Validated(ticket);
+            context.Request.Context.Authentication.SignIn(cookieIdentity);
+            //context.Response.Cookies.Append("token", context.Request.Headers.GetValues("Authorization")[0].ToString());
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
